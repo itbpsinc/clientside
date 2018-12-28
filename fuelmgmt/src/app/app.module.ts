@@ -10,9 +10,11 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { NoAccessComponent } from './no-access/no-access.component'; 
-import {AuthService} from './services/auth.service';
+import {AuthService} from './services/auth.service'
 import { Observable, pipe } from 'rxjs';
 import {  mergeMap } from 'rxjs/operators';
+import { DispatchComponent } from './dispatch/dispatch.component';
+import { DriverComponent } from './driver/driver.component';
 
 
 @NgModule({
@@ -22,14 +24,19 @@ import {  mergeMap } from 'rxjs/operators';
     LoginComponent,
     HomeComponent,
     AdminComponent,
-    NoAccessComponent
+    NoAccessComponent,
+    DispatchComponent,
+    DriverComponent
     
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
+      { path: 'driver', component: DriverComponent },
+      { path: 'dispatch', component: DispatchComponent },
       { path: 'admin', component: AdminComponent },
       { path: 'login', component: LoginComponent },
       { path: 'no-access', component: NoAccessComponent }

@@ -5,13 +5,13 @@ import {AuthService} from './../services/auth.service';
 
 
 @Component({
-  selector: 'login',
+  selector: 'userlogin',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  invalidLogin: boolean; 
+  invalidLogin: boolean = false; 
   
   constructor(private router: Router,
               private authServices: AuthService)
@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
          this.invalidLogin = true; 
      }); 
   }
-  ngOnInit() {
-  }
+ 
 
 }
