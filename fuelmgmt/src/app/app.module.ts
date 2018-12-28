@@ -15,6 +15,9 @@ import { Observable, pipe } from 'rxjs';
 import {  mergeMap } from 'rxjs/operators';
 import { DispatchComponent } from './dispatch/dispatch.component';
 import { DriverComponent } from './driver/driver.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+
 
 
 @NgModule({
@@ -32,9 +35,10 @@ import { DriverComponent } from './driver/driver.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent },
+      { path: '', component: HomeComponent},
       { path: 'driver', component: DriverComponent },
       { path: 'dispatch', component: DispatchComponent },
       { path: 'admin', component: AdminComponent },
