@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" routerLink="/">ITBPS Inc</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -8,34 +9,45 @@
       <li class="nav-item active">
         <a class="nav-link" routerLink="/">Home <span class="sr-only">(current)</span></a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" routerLink="/dispatch">Dispatch</a>
+        <a class="nav-link" routerLink="">Fuel Managmenet</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="">Feet Card</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/driver">Driver</a>
+        <a class="nav-link" routerLink="">Whole Sale Division</a>
       </li>
-      
-      <li ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Admin
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="">Tank Line</a>
+      </li>
+
+
+      <li *ngIf="!service.isLoggedIn()" class="nav-item">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="service.isLoggedIn()" ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          {{service.currentUser.loginid}}
         </a>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" routerLink="#">Action</a>
-          <a class="dropdown-item" routerLink="#">Another action</a>
-          <a class="dropdown-item" routerLink="#">Something else here</a>
+          <a *ngIf="dispatch.includes(service.currentUser.role)" class="dropdown-item" routerLink="/dispatch">Dispatch</a>
+          <a *ngIf="driver.includes(service.currentUser.role)" class="dropdown-item" routerLink="/driver">Driver</a>
+          <a *ngIf="acct.includes(service.currentUser.role)" class="dropdown-item" routerLink="#">Accounting</a>
+          <a *ngIf="mgr.includes(service.currentUser.role)" class="dropdown-item" routerLink="#">Office Management</a>
+
+          <a class="dropdown-item" *ngIf="service.isLoggedIn()" (click)="logout()">Logout</a>
         </div>
       </li>
 
-      <li ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          LoginUser
-        </a>
-        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" routerLink="/login">Login</a>
-          <a class="dropdown-item"  (click)="logout()">Logout</a>
-        
-        </div>
-      </li>
+
     </ul>
   </div>
 </nav>
+<p> "is Login in " {{service.isLoggedIn()}}</p>
+<br>
+<p>User {{mgr}}</p>

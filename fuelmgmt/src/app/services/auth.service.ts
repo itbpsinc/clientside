@@ -6,19 +6,24 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import { catchError } from 'rxjs/operators';
+import { CanActivate, Router } from '@angular/router';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService 
+{
 
-  private currentUser: {};
+  currentUser:any;
+
+
+  
   
 
   private url = 'http://itbps:8083/serverside/fuellogin';
 
-  constructor(private http: HttpClient) 
+  constructor(private http: HttpClient, private router: Router) 
   {
 
     const token = localStorage.getItem('token');
@@ -27,6 +32,7 @@ export class AuthService {
 
       const jwt = new JwtHelper();
       const isTokenExpired = jwt.isTokenExpired(token);
+   
       if (!isTokenExpired)
         this.currentUser = jwt.decodeToken(token);
       else this.currentUser = null;
@@ -36,6 +42,15 @@ export class AuthService {
   }
 
 
+  
+  getCurrentUser()
+  {
+      let token = localStorage.getItem('token');
+      if (!token)
+        return null;
+      return new JwtHelper().decodeToken('token');
+  }
+ 
   extractData(res: Response) {
     let body = res.json();
     return body || {};
@@ -45,7 +60,7 @@ export class AuthService {
     return Observable.throw(error.message || error);
   }
 
-  login(credentials) 
+  login(credentials)
   {
 
     const httpOptions = {
@@ -56,7 +71,26 @@ export class AuthService {
     };
 
     return this.http.post(this.url, JSON.stringify(credentials),httpOptions)
-      .subscribe(response => {
+     .map(response =>{
+        
+        let result:any = response;
+      
+        if (result && result.token) 
+        {
+           localStorage.setItem('token', result.token);
+           
+           let jwt = new JwtHelper();
+           this.currentUser = jwt.decodeToken(localStorage.getItem('token'));
+           return true;
+        }
+        else return false;
+
+     });
+
+    /*
+    return this.http.post(this.url, JSON.stringify(credentials),httpOptions)
+      .subscribe(response => 
+      {
 
         console.log(response);
         let result:any = response;
@@ -69,7 +103,7 @@ export class AuthService {
           return true;
         }
         else return false;
-      });
+      }); */
   
 
   }
@@ -80,6 +114,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
+    console.log("Token Not Expired? " + tokenNotExpired('token'));
     return tokenNotExpired('token');
   }
 }

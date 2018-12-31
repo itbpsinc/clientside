@@ -9,7 +9,19 @@ import {AuthService} from './../services/auth.service';
 })
 export class NavbarComponent {
 
-  constructor(private service: AuthService) { }
+  driver   = ["Admin", "Driver","Dispatch"];
+  dispatch = ["Dispatch","Admin"];
+  admin    = ["Admin"];
+  mgr      = ["Admin","Manager","Accounting"];
+  acct     = ["Admin","Accounting"];
+
+
+
+  constructor(private service: AuthService) 
+  { 
+    
+     
+  }
 
   logout() {
      this.service.logout();

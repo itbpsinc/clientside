@@ -17,6 +17,7 @@ import { DispatchComponent } from './dispatch/dispatch.component';
 import { DriverComponent } from './driver/driver.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import {AuthGuardService} from './services/auth-guard.service';
 
 
 
@@ -41,13 +42,14 @@ import { HttpClientModule } from '@angular/common/http';
       { path: '', component: HomeComponent},
       { path: 'driver', component: DriverComponent },
       { path: 'dispatch', component: DispatchComponent },
-      { path: 'admin', component: AdminComponent },
+      { path: 'admin', component: AdminComponent, canActivate:[AuthGuardService] },
       { path: 'login', component: LoginComponent },
       { path: 'no-access', component: NoAccessComponent }
     ])    
   ],
   providers: [
-    AuthService
+    AuthService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })
