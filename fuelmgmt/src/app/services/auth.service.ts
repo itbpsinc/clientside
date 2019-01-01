@@ -71,7 +71,7 @@ export class AuthService
     };
 
     return this.http.post(this.url, JSON.stringify(credentials),httpOptions)
-     .map(response =>{
+     .pipe(map(response =>{
         
         let result:any = response;
       
@@ -85,7 +85,7 @@ export class AuthService
         }
         else return false;
 
-     });
+     }));
 
     /*
     return this.http.post(this.url, JSON.stringify(credentials),httpOptions)
