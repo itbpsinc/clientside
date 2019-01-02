@@ -19,7 +19,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import {AuthGuardService} from './services/auth-guard.service';
 import { EmployeeComponent } from './employee/employee.component';
-
+import { AgGridModule } from 'ag-grid-angular';
+import 'ag-grid-enterprise';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { EmployeeComponent } from './employee/employee.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    AgGridModule.withComponents([]),
     NgbModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
