@@ -18,6 +18,7 @@ import { DriverComponent } from './driver/driver.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import {AuthGuardService} from './services/auth-guard.service';
+import { EmployeeComponent } from './employee/employee.component';
 
 
 
@@ -30,7 +31,8 @@ import {AuthGuardService} from './services/auth-guard.service';
     AdminComponent,
     NoAccessComponent,
     DispatchComponent,
-    DriverComponent
+    DriverComponent,
+    EmployeeComponent
     
   ],
   imports: [
