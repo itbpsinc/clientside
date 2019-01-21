@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ErrorDialogService } from '../error-dialog-service/errordialog.service';
+import { ErrorDialogService } from '../services/error-dialog.service';
 import {
     HttpInterceptor,
     HttpRequest,
