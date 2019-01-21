@@ -21,7 +21,7 @@ export class AuthService
   
   
 
-  private url = 'http://itbps:8083/serverside/fuellogin';
+  private url = 'http://localhost:8083/serverside/rest/itbps/authenticate/';
 
   constructor(private http: HttpClient, private router: Router) 
   {
@@ -80,7 +80,8 @@ export class AuthService
            localStorage.setItem('token', result.token);
            
            let jwt = new JwtHelper();
-           this.currentUser = jwt.decodeToken(localStorage.getItem('token'));
+           let token  = localStorage.getItem('token');
+           this.currentUser = jwt.decodeToken(token.trim());
            return true;
         }
         else return false;

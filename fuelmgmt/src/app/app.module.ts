@@ -16,11 +16,16 @@ import {  mergeMap } from 'rxjs/operators';
 import { DispatchComponent } from './dispatch/dispatch.component';
 import { DriverComponent } from './driver/driver.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
 import {AuthGuardService} from './services/auth-guard.service';
 import { EmployeeComponent } from './employee/employee.component';
 import { AgGridModule } from 'ag-grid-angular';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import 'ag-grid-enterprise';
+import { MatDialogModule } from '@angular/material';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor} from './interceptor/httpconfig.interceptor';
+import {ErrorDialogComponent}   from './errordialog/errordialog.component';
+import {ErrorDialogService}     from './services/error-dialog.service';
 
 
 @NgModule({
@@ -33,13 +38,17 @@ import 'ag-grid-enterprise';
     NoAccessComponent,
     DispatchComponent,
     DriverComponent,
-    EmployeeComponent
+    EmployeeComponent,
+    HttpConfigInterceptor,
+    ErrorDialogComponent
     
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    MatDialogModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     AgGridModule.withComponents([]),
     NgbModule.forRoot(),
     RouterModule.forRoot([
@@ -53,8 +62,11 @@ import 'ag-grid-enterprise';
   ],
   providers: [
     AuthService,
-    AuthGuardService
+    AuthGuardService,
+    ErrorDialogService,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
   ],
+  entryComponents: [ErrorDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
