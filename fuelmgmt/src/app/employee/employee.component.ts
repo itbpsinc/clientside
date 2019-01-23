@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import {AuthService} from './../services/auth.service';
 
 @Component({
   selector: 'app-employee',
@@ -17,81 +18,11 @@ export class EmployeeComponent implements OnInit {
 
 
 
-  constructor() {
-    this.columnDefs = [
-      {
-        headerName: "Id",
-        field: "id",
-        editable: false
-      },
-      {
-        headerName: "FirstName",
-        field: "firstName",
-        editable: true
-      },
-      {
-        headerName: "LastName",
-        field: "lastName",
-        editable: true
-      },
-      {
-        headerName: "Address",
-        field: "address1",
-        editable: true
-      },
-      {
-        headerName: "Address2",
-        field: "address2",
-        editable: true
-      },
-      {
-        headerName: "City",
-        field: "city",
-        editable: true
-      },
-      {
-        headerName: "State",
-        field: "state",
-        editable: true
-      },
-      {
-        headerName: "Zipcode",
-        field: "Zipcode",
-        editable: true
-      },
-      {
-        headerName: "DOH",
-        field: "dateofhire",
-        editable: true
-      },
-      {
-        headerName: "SSN",
-        field: "ssn",
-        editable: true
-      },
-      {
-        headerName: "Active",
-        field: "active",
-        editable: true
-  
-      },
-      {
-        headerName: "Role",
-        field: "role",
-        editable: true,
-        cellEditor: "agSelectCellEditor",
-        cellEditorParams: {
-          values: ["User", "Admin", "Dispatch", "Accountant", "Office Manager"]
-        }
-      }
-    ];
+  constructor(private authServices: AuthService) 
+  {
+    
 
-    this.components = { numericCellEditor: getNumericCellEditor() };
-    this.rowData = getRowData();
-    this.editType = "fullRow";
-
-
-
+    
   }
 
   onRowValueChanged(param) {
@@ -104,8 +35,152 @@ export class EmployeeComponent implements OnInit {
 
     params.api.sizeColumnsToFit();
   }
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.rowData = this.onGetRowData();
+    this.columnDefs = [
+      {
+        headerName: "Id",
+        field: "id",
+        editable: false,
+        sortable: true
+      },
+      {
+        headerName: "FirstName",
+        field: "firstName",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+
+      },
+      {
+        headerName: "LastName",
+        field: "lastName",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "Address",
+        field: "address1",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "Address2",
+        field: "address2",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "City",
+        field: "city",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "State",
+        field: "state",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "Zipcode",
+        field: "Zipcode",
+        editable: true,
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
+        headerName: "DOH",
+        field: "dateofhire",
+        editable: true,
+        sortable: true,
+        filter: true
+      },
+      {
+        headerName: "SSN",
+        field: "ssn",
+        editable: true,
+        sortable: true,
+        filter: true
+      },
+      {
+        headerName: "Active",
+        field: "active",
+        editable: true,
+        sortable: true,
+        filter: true
+  
+      },
+      {
+        headerName: "Role",
+        field: "role",
+        editable: true,
+        sortable: true,
+        filter: true,
+        cellEditor: "agSelectCellEditor",
+        cellEditorParams: {
+          values: ["User", "Admin", "Dispatch", "Accountant", "Office Manager"]
+        }
+      }
+    ];
+
+    this.components = { numericCellEditor: getNumericCellEditor() }; 
+    this.editType = "fullRow";
+  
   }
+
+  onGetRowData()
+  {
+    let data;
+    this.authServices.getEmployees().subscribe(result=>{
+      data = result;
+      let rowdata =  data.data.splice(0);
+      this.rowData = rowdata;
+      console.log('event--->>>', this.rowData);
+      //return rowdata;
+
+    });
+
+     /*
+    for (var i = 0; i < 2; i++) 
+    {
+      this.rowData.push({
+        id:     1,
+        nameid: "Austin",
+        firstName: "Onyekachi",
+        lastName: "Anyanwu",
+        address1: "15642 Altomare Trace Way",
+        address2: "",
+        city:     "Woodbridge",
+        state:    "VA",
+        zipcode:  "22193",
+        dateofhire: "05/21/10218",
+        ssn:        "223-43-2322",
+        password:   "",
+        role:       "Admin",
+        active:     "True"
+      });
+      
+      //return rowData;
+      
+    }
+    */
+   
+  }
+  
 
   onAddRow() {
     var newItem = createNewRowData();
@@ -166,29 +241,6 @@ export class EmployeeComponent implements OnInit {
 }
 
 
-function getRowData() {
-  var rowData = [];
-  for (var i = 0; i < 2; i++) {
-    rowData.push({
-      id:     1,
-      nameid: "Austin",
-      firstName: "Onyekachi",
-      lastName: "Anyanwu",
-      address1: "15642 Altomare Trace Way",
-      address2: "",
-      city:     "Woodbridge",
-      state:    "VA",
-      zipcode:  "22193",
-      dateofhire: "05/21/10218",
-      ssn:        "223-43-2322",
-      password:   "",
-      role:       "Admin",
-      active:     "True"
-    });
-    
-  }
-  return rowData;
-}
 
 
 function createNewRowData() {

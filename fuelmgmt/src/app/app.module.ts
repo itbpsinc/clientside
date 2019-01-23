@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthHttp, AUTH_PROVIDERS, provideAuth, AuthConfig } from 'angular2-jwt/angular2-jwt';
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -20,12 +20,14 @@ import {AuthGuardService} from './services/auth-guard.service';
 import { EmployeeComponent } from './employee/employee.component';
 import { AgGridModule } from 'ag-grid-angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import 'ag-grid-enterprise';
-import { MatDialogModule } from '@angular/material';
+
+
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor} from './interceptor/httpconfig.interceptor';
 import {ErrorDialogComponent}   from './errordialog/errordialog.component';
 import {ErrorDialogService}     from './services/error-dialog.service';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AngridComponent } from './angrid/angrid.component'
 
 
 @NgModule({
@@ -39,8 +41,8 @@ import {ErrorDialogService}     from './services/error-dialog.service';
     DispatchComponent,
     DriverComponent,
     EmployeeComponent,
-    HttpConfigInterceptor,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    AngridComponent
     
   ],
   imports: [
@@ -54,6 +56,7 @@ import {ErrorDialogService}     from './services/error-dialog.service';
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
       { path: 'driver', component: DriverComponent },
+      { path: 'employee', component: EmployeeComponent },
       { path: 'dispatch', component: DispatchComponent },
       { path: 'admin', component: AdminComponent, canActivate:[AuthGuardService] },
       { path: 'login', component: LoginComponent },

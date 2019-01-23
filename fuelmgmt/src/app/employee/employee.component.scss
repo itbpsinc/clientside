@@ -2,3 +2,11 @@
 .ag-row-editing {
     background-color: #5bc0de !important;
   }
+.ag-pivot-off .ag-header-cell-label{
+    color:#8a6d3b;
+}
+
+.ag-pivot-on .ag-header-cell-label{
+    color:#1b6d85;
+    font-weight: bold;
+}

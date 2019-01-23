@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { Headers, RequestOptions } from '@angular/http';
 import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import 'rxjs/add/operator/map';
+import { pipe } from 'rxjs';
+//import 'rxjs/add/operator/map';
 import { catchError } from 'rxjs/operators';
 import { CanActivate, Router } from '@angular/router';
 
@@ -12,19 +13,17 @@ import { CanActivate, Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService 
-{
+export class AuthService {
 
-  currentUser:any;
+  currentUser: any;
 
 
-  
-  
 
-  private url = 'http://localhost:8083/serverside/rest/itbps/authenticate/';
 
-  constructor(private http: HttpClient, private router: Router) 
-  {
+
+  private url = 'http://localhost:8083/serverside/rest/itbps/';
+
+  constructor(private http: HttpClient, private router: Router) {
 
     const token = localStorage.getItem('token');
 
@@ -32,7 +31,7 @@ export class AuthService
 
       const jwt = new JwtHelper();
       const isTokenExpired = jwt.isTokenExpired(token);
-   
+
       if (!isTokenExpired)
         this.currentUser = jwt.decodeToken(token);
       else this.currentUser = null;
@@ -42,15 +41,14 @@ export class AuthService
   }
 
 
-  
-  getCurrentUser()
-  {
-      let token = localStorage.getItem('token');
-      if (!token)
-        return null;
-      return new JwtHelper().decodeToken('token');
+
+  getCurrentUser() {
+    let token = localStorage.getItem('token');
+    if (!token)
+      return null;
+    return new JwtHelper().decodeToken('token');
   }
- 
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};
@@ -60,40 +58,40 @@ export class AuthService
     return Observable.throw(error.message || error);
   }
 
-  login(credentials)
-  {
+  getEmployees() {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization':  'ITBPSINC ' + localStorage.getItem('token')
-      })
-    };
+    return this.http.get(this.url + "employeeList/").pipe(map(response => response));
+  }
 
-    return this.http.post(this.url, JSON.stringify(credentials),httpOptions)
-     .pipe(map(response =>{
-        
-        let result:any = response;
-      
-        if (result && result.token) 
-        {
-           localStorage.setItem('token', result.token);
-           
-           let jwt = new JwtHelper();
-           let token  = localStorage.getItem('token');
-           this.currentUser = jwt.decodeToken(token.trim());
-           return true;
+
+
+
+
+  login(credentials) {
+
+    return this.http.post(this.url + "authenticate/", JSON.stringify(credentials))
+      .pipe(map(response => {
+
+        let result: any = response;
+
+        if (result && result.token) {
+          localStorage.setItem('token', result.token);
+
+          let jwt = new JwtHelper();
+          let token = localStorage.getItem('token');
+          this.currentUser = jwt.decodeToken(token.trim());
+          return true;
         }
         else return false;
 
-     }));
+      }));
 
     /*
     return this.http.post(this.url, JSON.stringify(credentials),httpOptions)
       .subscribe(response => 
       {
-
-        console.log(response);
+  
+        //console.log(response);
         let result:any = response;
         
         if (result && result.token) 
@@ -105,7 +103,7 @@ export class AuthService
         }
         else return false;
       }); */
-  
+
 
   }
 
@@ -115,7 +113,7 @@ export class AuthService
   }
 
   isLoggedIn() {
-    console.log("Token Not Expired? " + tokenNotExpired('token'));
+    //console.log("Token Not Expired? " + tokenNotExpired('token'));
     return tokenNotExpired('token');
   }
 }
