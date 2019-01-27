@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { Headers, RequestOptions } from '@angular/http';
 import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs/operators/map';
 import { pipe } from 'rxjs';
-//import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 import { catchError } from 'rxjs/operators';
-import { CanActivate, Router } from '@angular/router';
 
+import { CanActivate, Router } from '@angular/router';
+import { Employee } from '../model/Employee'
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class AuthService {
 
 
   getCurrentUser() {
-    let token = localStorage.getItem('token');lo
+    let token = localStorage.getItem('token');
     if (!token)
       return null;
     return new JwtHelper().decodeToken('token');
@@ -58,9 +59,13 @@ export class AuthService {
     return Observable.throw(error.message || error);
   }
 
-  getEmployees() {
+  getEmployees(): Observable<Employee[]> {
 
-    return this.http.get(this.url + "employeeList/").pipe(map(response => response));
+    return this.http.get(this.url + "employeeList/")
+      .pipe(
+        map((response: any) => response.data))
+      .catch(this.defaultErrorHandler());
+
   }
 
 
@@ -115,5 +120,12 @@ export class AuthService {
   isLoggedIn() {
     //console.log("Token Not Expired? " + tokenNotExpired('token'));
     return tokenNotExpired('token');
+  }
+
+  private defaultErrorHandler() {
+    return (error: any) => {
+      console.log(error);
+      return Observable.throw(error.json().error || 'Server error')
+    };
   }
 }

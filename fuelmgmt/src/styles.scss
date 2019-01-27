@@ -1,12 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-@import 'ag-grid-community/dist/styles/ag-grid.css';
-@import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+$ag-icons-path: "~ag-grid-community/src/styles/ag-theme-base/icons/";
+$odd-row-background-color: #dceeff;
+
+@import "~ag-grid-community/src/styles/ag-grid.scss";
+@import "~ag-grid-community/src/styles/ag-theme-fresh/sass/ag-theme-fresh.scss";
+
+
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
+
+.align-right {
+    text-align: right;
+  }
+.ag-header-cell-label {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100%;
+    padding:0 !important;
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+    
+}
+
+.ag-row-editing {
+    background-color: #5bc0de !important;
+  }
 body 
    { 
        padding: 20px; 
    }
+
+  

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import {AuthService} from './../services/auth.service';
+import {FuelmgtService} from './../services/fuelmgt.service';
 
 @Component({
   selector: 'app-employee',
@@ -15,10 +15,11 @@ export class EmployeeComponent implements OnInit {
   private components;
   private rowData;
   private editType;
+  private defaultColDef;
 
 
 
-  constructor(private authServices: AuthService) 
+  constructor(private fuelmgtService: FuelmgtService) 
   {
     
 
@@ -26,14 +27,20 @@ export class EmployeeComponent implements OnInit {
   }
 
   onRowValueChanged(param) {
-    console.log(param.data);
+    console.log("New row is updated",param.data);
   }
 
+  autoSizeAll() {
+    var allColumnIds = [];
+    this.gridColumnApi.getAllColumns().forEach(function(column) {
+      allColumnIds.push(column.colId);
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds);
+  }
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-
-    params.api.sizeColumnsToFit();
+    this.autoSizeAll();
   }
   ngOnInit() 
   {
@@ -43,7 +50,8 @@ export class EmployeeComponent implements OnInit {
         headerName: "Id",
         field: "id",
         editable: false,
-        sortable: true
+        sortable: true,
+        hide:true
       },
       {
         headerName: "FirstName",
@@ -51,7 +59,11 @@ export class EmployeeComponent implements OnInit {
         editable: true,
         sortable: true,
         filter: true,
-        resizable: true
+        width: 500,
+        resizable: true,
+        pinned: "left"
+        
+
 
       },
       {
@@ -60,27 +72,32 @@ export class EmployeeComponent implements OnInit {
         editable: true,
         sortable: true,
         filter: true,
-        resizable: true
+        resizable: true,
+        pinned: "left",
+        width: 500,
       },
       {
         headerName: "Address",
         field: "address1",
         editable: true,
-        sortable: true,
+        sortable: false,
         filter: true,
+        width: 700,
         resizable: true
       },
       {
         headerName: "Address2",
         field: "address2",
         editable: true,
-        sortable: true,
+        sortable: false,
         filter: true,
+        width: 700,
         resizable: true
       },
       {
         headerName: "City",
         field: "city",
+        width: 500,
         editable: true,
         sortable: true,
         filter: true,
@@ -90,6 +107,7 @@ export class EmployeeComponent implements OnInit {
         headerName: "State",
         field: "state",
         editable: true,
+        width: 250,
         sortable: true,
         filter: true,
         resizable: true
@@ -100,21 +118,25 @@ export class EmployeeComponent implements OnInit {
         editable: true,
         sortable: true,
         filter: true,
+        width: 250,
         resizable: true
       },
       {
         headerName: "DOH",
         field: "dateofhire",
         editable: true,
-        sortable: true,
+        sortable: false,
+        width: 200,
         filter: true
+       
       },
       {
         headerName: "SSN",
         field: "ssn",
         editable: true,
-        sortable: true,
-        filter: true
+        sortable: false,
+        width: 200,
+        suppressMenu: true
       },
       {
         headerName: "Active",
@@ -122,7 +144,7 @@ export class EmployeeComponent implements OnInit {
         editable: true,
         sortable: true,
         filter: true
-  
+       
       },
       {
         headerName: "Role",
@@ -137,47 +159,26 @@ export class EmployeeComponent implements OnInit {
       }
     ];
 
-    this.components = { numericCellEditor: getNumericCellEditor() }; 
+
+    this.components = { numericCellEditor: getNumericCellEditor(),
+                        datePicker: getDatePicker() }; 
     this.editType = "fullRow";
+    this.defaultColDef = { resizable: true };
   
   }
 
   onGetRowData()
   {
     let data;
-    this.authServices.getEmployees().subscribe(result=>{
-      data = result;
-      let rowdata =  data.data.splice(0);
-      this.rowData = rowdata;
+    this.fuelmgtService.getEmployees().subscribe(employees =>{
+      this.rowData = employees;
+    
       console.log('event--->>>', this.rowData);
       //return rowdata;
 
     });
 
-     /*
-    for (var i = 0; i < 2; i++) 
-    {
-      this.rowData.push({
-        id:     1,
-        nameid: "Austin",
-        firstName: "Onyekachi",
-        lastName: "Anyanwu",
-        address1: "15642 Altomare Trace Way",
-        address2: "",
-        city:     "Woodbridge",
-        state:    "VA",
-        zipcode:  "22193",
-        dateofhire: "05/21/10218",
-        ssn:        "223-43-2322",
-        password:   "",
-        role:       "Admin",
-        active:     "True"
-      });
-      
-      //return rowData;
-      
-    }
-    */
+    
    
   }
   
@@ -223,23 +224,17 @@ export class EmployeeComponent implements OnInit {
     var res = this.gridApi.updateRowData({ remove: selectedData });
     console.log(res.remove[0].data.id);
     var id = res.remove[0].data.id;
-    /*
-    this.http.delete<any>('http://hostname/api/v1/delete/'+id).subscribe(
-        res => {
-          console.log(res);
-      },
-      (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          console.log("Client-side error occurred.");
-        } else {
-          console.log("Server-side error occurred.");
-        }
-      });
-      */
+    
   }
 
 }
 
+
+
+
+function RefundedCellRenderer(params) {
+  return params.value;
+}
 
 
 

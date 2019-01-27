@@ -1,12 +1,21 @@
 
+
+
 .ag-row-editing {
     background-color: #5bc0de !important;
   }
-.ag-pivot-off .ag-header-cell-label{
-    color:#8a6d3b;
+  .ag-header-cell-label {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100%;
+    padding:0 !important;
+    font-size: 15px;
+    color: red;
 }
 
-.ag-pivot-on .ag-header-cell-label{
-    color:#1b6d85;
-    font-weight: bold;
+  .ag-header-cell-label {
+    /*Necessary to allow for text to grow vertically*/
+    height: 100%;
+    padding:0 !important;
+    font-size: 10px;
+    color: red;
 }
