@@ -1,12 +1,14 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import {FuelmgtService} from './../services/fuelmgt.service';
 
+import { MatCheckboxComponent} from "../mat/mat-checkbox/mat-checkbox.component";
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit 
+{
 
   private gridApi;
   private gridColumnApi;
@@ -14,8 +16,12 @@ export class EmployeeComponent implements OnInit {
   private columnDefs;
   private components;
   private rowData;
+  private rowSelection;
   private editType;
   private defaultColDef;
+  private rowHeight;
+  private selectRow: {};
+  private frameworkComponents = {};
 
 
 
@@ -26,8 +32,18 @@ export class EmployeeComponent implements OnInit {
     
   }
 
-  onRowValueChanged(param) {
-    console.log("New row is updated",param.data);
+  onRowValueChanged(param) 
+  {
+  
+    let changeValue = removeEmpty(JSON.parse(JSON.stringify(param.data)));
+    
+  
+    let seleRow  =   removeEmpty(this.selectRow);
+   // console.log("New row is updated",changeValue);
+    //console.log("Previous      data",seleRow);
+    console.log("Any value Changed ",!isEquivalent(changeValue,seleRow));
+    this.selectRow = {};
+
   }
 
   autoSizeAll() {
@@ -62,10 +78,7 @@ export class EmployeeComponent implements OnInit {
         width: 500,
         resizable: true,
         pinned: "left"
-        
-
-
-      },
+   },
       {
         headerName: "LastName",
         field: "lastName",
@@ -143,7 +156,8 @@ export class EmployeeComponent implements OnInit {
         field: "active",
         editable: true,
         sortable: true,
-        filter: true
+        filter: true,
+        cellRenderer: "checkboxRenderer"
        
       },
       {
@@ -160,13 +174,27 @@ export class EmployeeComponent implements OnInit {
     ];
 
 
-    this.components = { numericCellEditor: getNumericCellEditor(),
-                        datePicker: getDatePicker() }; 
+    this.components = { numericCellEditor: getNumericCellEditor()}; 
+    this.frameworkComponents = {checkboxRenderer: MatCheckboxComponent}
     this.editType = "fullRow";
-    this.defaultColDef = { resizable: true };
+    this.rowSelection ="single";
+    this.defaultColDef = { resizable: true};
+    this.rowHeight = 40;
   
   }
 
+  onSelectionChanged()
+  {
+    var selectedRows = this.gridApi.getSelectedRows();
+    var selectedRowsString = "";
+    selectedRows.forEach(function(selectedRow, index) {
+      if (index !== 0) {
+        selectedRowsString += ", ";
+      }
+      selectedRowsString += selectedRow.lastName + ', ' + selectedRow.firstName;
+    });
+    document.querySelector("#selectedRows").innerHTML = selectedRowsString;
+  }
   onGetRowData()
   {
     let data;
@@ -201,10 +229,21 @@ export class EmployeeComponent implements OnInit {
     var res = this.gridApi.updateRowData({ remove: selectedData });
     printResult(res);
   }
-  updateItemRow() {
+  onUpdateItemRow() {
     var selectedRowData = this.gridApi.getSelectedRows();
-    var res = this.gridApi.updateRowData({ update: selectedRowData });
+    var res = this.gridApi.updateRowData({ update: selectedRowData, colkey: 'firstName'});
     printResult(res);
+  }
+  onRowEditingStarted(param)
+  {
+      console.log("onRowEditingStarted....");
+      this.selectRow = JSON.parse(JSON.stringify(this.gridApi.getSelectedRows()[0]));
+    
+      Object.keys(this.selectRow).forEach((obj)=>{
+        console.log(obj);
+      })
+      
+     
   }
   updateItems() {
     var itemsToUpdate = [];
@@ -229,7 +268,39 @@ export class EmployeeComponent implements OnInit {
 
 }
 
+function isEquivalent(a, b) {
+  // Create arrays of property names
+  var aProps = Object.getOwnPropertyNames(a);
+  var bProps = Object.getOwnPropertyNames(b);
 
+  // If number of properties is different,
+  // objects are not equivalent
+  if (aProps.length != bProps.length) {
+      return false;
+  }
+
+  for (var i = 0; i < aProps.length; i++) {
+      var propName = aProps[i];
+
+      // If values of same property are not equal,
+      // objects are not equivalent
+      let avalue = a[propName];
+      let bvalue = b[propName];
+      
+      let aval = avalue+"".trim();
+      let bval  = bvalue+"".trim();     
+      aval =  aval.trim().replace(/^"|"$/g, '');
+      bval =  bval.trim().replace(/^"|"$/g, '');
+
+      if (aval !== bval) {
+          return false;
+      }
+  }
+
+  // If we made it this far, objects
+  // are considered equivalent
+  return true;
+}
 
 
 function RefundedCellRenderer(params) {
@@ -249,6 +320,7 @@ var newData = {
 
 return newData;
 }
+
 function getNumericCellEditor() 
 {
 function isCharNumeric(charStr) {
@@ -310,6 +382,15 @@ NumericCellEditor.prototype.focusOut = function () {
 };
 return NumericCellEditor;
 }
+
+
+function removeEmpty(obj) {
+  Object.keys(obj).forEach(function(key) {
+    (obj[key] && typeof obj[key] === 'object') && removeEmpty(obj[key]) ||
+    (obj[key] === '' || obj[key] === null) && delete obj[key]
+  });
+  return obj;
+};
 
 function printResult(res) {
 console.log("---------------------------------------");

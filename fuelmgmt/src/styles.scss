@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-$ag-icons-path: "~ag-grid-community/src/styles/ag-theme-base/icons/";
-$odd-row-background-color: #dceeff;
+$ag-icons-path: "~ag-grid-community/src/styles/ag-theme-material/icons/";
+$odd-row-background-color: #f32c1a;
+
 
 @import "~ag-grid-community/src/styles/ag-grid.scss";
-@import "~ag-grid-community/src/styles/ag-theme-fresh/sass/ag-theme-fresh.scss";
+@import "~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material.scss";
 
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
@@ -14,6 +15,7 @@ $odd-row-background-color: #dceeff;
 .align-right {
     text-align: right;
   }
+
 .ag-header-cell-label {
     /*Necessary to allow for text to grow vertically*/
     height: 100%;
@@ -25,7 +27,7 @@ $odd-row-background-color: #dceeff;
 }
 
 .ag-row-editing {
-    background-color: #5bc0de !important;
+    background-color: #c2de5b !important;
   }
 body 
    { 

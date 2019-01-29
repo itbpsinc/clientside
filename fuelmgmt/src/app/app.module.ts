@@ -82,7 +82,7 @@ import { MatSelectComponent } from './mat/mat-select/mat-select.component';
     MatProgressSpinnerModule,
     MatSliderModule,
     MatCardModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([MatCheckboxComponent]),
     NgbModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
@@ -94,6 +94,7 @@ import { MatSelectComponent } from './mat/mat-select/mat-select.component';
       { path: 'no-access', component: NoAccessComponent }
     ])    
   ],
+ 
   providers: [
     AuthService,
     AuthGuardService,
