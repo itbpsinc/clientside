@@ -15,4 +15,5 @@ export class Employee
     password: string;
     role: string;
     active: boolean;
+    nameid: string;
 }

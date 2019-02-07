@@ -21,6 +21,7 @@ export class FuelmgtService {
   private url = 'http://localhost:8083/serverside/rest/itbps';
 
   private getEmployeeUrl = this.url + '/employeeList/';
+  private saveEmployeeUrl = this.url + '/adddEmployee';
 
 
 
@@ -36,6 +37,16 @@ export class FuelmgtService {
       .pipe(
         map((response: any) => response.data))
       .catch(this.defaultErrorHandler());
+
+  }
+
+  saveEmployee(employee:Employee): Observable<Employee>
+  {
+      return this.http.post<Employee>(this.saveEmployeeUrl,employee).pipe(
+        map((response: any) => response.data))
+        .catch(this.defaultErrorHandler());
+
+      
 
   }
 
