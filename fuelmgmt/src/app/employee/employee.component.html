@@ -1,44 +1,31 @@
-<div style="height: 100%; width: 100%; padding-top: 30px; box-sizing: border-box;">
-  <div style=" left: centered;">
-    <button type="button" class="btn btn-success" (click)="onAddRow()">
-        <span class="glyphicon glyphicon-plus"></span> Add
-    </button>
-    <button type="button" class="btn btn-info" (click)="onUpdateItemRow()">
-        <span class="glyphicon glyphicon-pencil"></span> Update
-      </button>
-      <button type="button" class="btn btn-danger" (click)="onRemoveSelected()">
-        <span class="glyphicon glyphicon-trash"></span> Delete
-    </button>
+
+
+
+  <div  layout-margin style="display: inline-flex; justify-content: space-around; width: 600px;  border-color: rgb(133, 80, 255); border-style: solid;">
+    
+    <button mat-raised-button color="primary"  (click)="onAddRow()">Add Employee</button>
+    <button mat-raised-button color="accent"   (click)="onUpdateItemRow()">Update Employee</button>
+    <button mat-raised-button color="warn"     (click)="onRemoveSelected()">Delete employee</button>
   </div>
-</div>
-  <div class="the-container" style="height: 100%; box-sizing: border-box; padding-top: 42px;">
-      <div class="the-header">Selection: <span id="selectedRows"></span></div>
-  <ag-grid-angular
-      #agGrid
-      style="width: 100%; height: 100%;"
-      id="myGrid"
-      class="ag-theme-material"
-      [columnDefs]="columnDefs"
-      [components]="components"
-      [rowData]="rowData"
-      [editType]="editType"
-      [enterMovesDownAfterEdit]="true"
-      [enterMovesDown]="true"
-      [defaultColDef]="defaultColDef"
-      [animateRows]="true"
-      [rowHeight] ="rowHeight"
-      [rowSelection]="rowSelection"
-      [frameworkComponents]="frameworkComponents"
-      suppressHorizontalScroll
-      (rowEditingStarted)="onRowEditingStarted($event)"
-      (selectionChanged)="onSelectionChanged()"
-      (rowValueChanged)="onRowValueChanged($event)"
+
+
+
+
+<mat-card-content class="the-container" style="height: 100%; box-sizing: border-box; padding-top: 42px;">
+  <div class="the-header">Selection: <span id="selectedRows"></span></div>
+
+ 
+    <ag-grid-angular #agGrid style="width: 100%; height: 100%;" id="myGrid" class="ag-theme-material" [columnDefs]="columnDefs"
+      [components]="components" [rowData]="rowData" [editType]="editType" [enterMovesDownAfterEdit]="true"
+      [enterMovesDown]="true" [defaultColDef]="defaultColDef" [animateRows]="true" [rowHeight]="rowHeight"
+      [rowSelection]="rowSelection" [frameworkComponents]="frameworkComponents" suppressHorizontalScroll
+      (rowEditingStarted)="onRowEditingStarted($event)" (selectionChanged)="onSelectionChanged()" (rowValueChanged)="onRowValueChanged($event)"
       (gridReady)="onGridReady($event)">
     </ag-grid-angular>
-  </div>
-  
-   
-   <!--
+</mat-card-content>
+
+
+<!--
     <button style="font-size: 12px" (click)="onBtStartEditing()">Start Editing Line 2</button>
     <button style="font-size: 12px" (click)="onBtStopEditing()">Stop Editing</button>
     -->

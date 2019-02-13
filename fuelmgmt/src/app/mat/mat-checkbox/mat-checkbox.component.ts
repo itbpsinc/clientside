@@ -17,7 +17,7 @@ export class MatCheckboxComponent implements  ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.params = params;
-    this.checked = this.params.value === "true";
+    this.checked = this.params.value as Boolean === true;
   }
 
   // demonstrates how you can do "inline" editing of a cell

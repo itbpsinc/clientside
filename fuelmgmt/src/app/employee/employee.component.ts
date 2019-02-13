@@ -3,6 +3,10 @@ import { FuelmgtService } from './../services/fuelmgt.service';
 import { Employee } from '../model/Employee';
 
 import { MatCheckboxComponent } from "../mat/mat-checkbox/mat-checkbox.component";
+import { MatDatePicketComponent} from "../mat/date-picket/date-picket.component";
+import * as moment from 'moment';
+import { GridApi } from 'ag-grid-community';
+
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
@@ -10,7 +14,7 @@ import { MatCheckboxComponent } from "../mat/mat-checkbox/mat-checkbox.component
 })
 export class EmployeeComponent implements OnInit {
 
-  private gridApi;
+  private gridApi:GridApi;
   private gridColumnApi;
 
   private columnDefs;
@@ -56,13 +60,15 @@ export class EmployeeComponent implements OnInit {
       emp.state = param.data.state;
       emp.nameid = param.data.nameid;
 
-      this.fuelmgtService.saveEmployee(emp).subscribe(employee => {
+      this.fuelmgtService.saveEmployee(emp).subscribe(employee => 
+      {
+    
 
-
-        console.log('event--->>>', employee);
-        //return rowdata;
-
-      });;
+      },
+       error =>{
+         console.log(error);
+         this.gridApi.stopEditing();
+       });;
 
 
     }
@@ -176,7 +182,9 @@ export class EmployeeComponent implements OnInit {
         editable: true,
         sortable: false,
         width: 200,
-        filter: true
+        filter: true,
+        cellEditorFramework: MatDatePicketComponent,
+        valueFormatter: (data) => data.value ? moment(data.value).format('L') : null
 
       },
       {
@@ -247,7 +255,7 @@ export class EmployeeComponent implements OnInit {
 
   onAddRow() {
     var newItem = createNewRowData();
-    this.gridApi.setFocusedCell(0, "firstName");
+    this.gridApi.setFocusedCell(0, "nameid");
     var res = this.gridApi.updateRowData({
       add: [newItem],
       addIndex: 0
@@ -255,8 +263,7 @@ export class EmployeeComponent implements OnInit {
     printResult(res);
     this.gridApi.startEditingCell({
       rowIndex: 0,
-      colKey: "firstName"
-    });
+      colKey: "nameid"});
   }
   onRemoveSelected() {
     var selectedData = this.gridApi.getSelectedRows();
@@ -265,7 +272,7 @@ export class EmployeeComponent implements OnInit {
   }
   onUpdateItemRow() {
     var selectedRowData = this.gridApi.getSelectedRows();
-    var res = this.gridApi.updateRowData({ update: selectedRowData, colkey: 'firstName' });
+    var res = this.gridApi.updateRowData({ update: selectedRowData});
     printResult(res);
   }
   onRowEditingStarted(param) {

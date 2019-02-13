@@ -37,11 +37,15 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                 return event;
             }),
             catchError((error: HttpErrorResponse) => {
-                let data = {};
+                let data:any = {};
+                data.reason = error && error.error.message ? error.error.message : ''
+                data.status = error.status;
+                /* 
                 data = {
-                    reason: error && error.error.reason ? error.error.reason : '',
+                    reason: error && error.message ? error.message : '',
                     status: error.status
                 };
+                */
                 this.errorDialogService.openDialog(data);
                 return throwError(error);
             }));

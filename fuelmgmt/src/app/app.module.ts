@@ -28,25 +28,32 @@ import {ErrorDialogComponent}   from './errordialog/errordialog.component';
 import {ErrorDialogService}     from './services/error-dialog.service';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AngridComponent } from './angrid/angrid.component';
+import { MomentModule } from 'angular2-moment';
+
 import {
   MatCardModule,
   MatButtonToggleModule,
   MatCheckboxModule,
   MatFormFieldModule,
   MatIconModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
   MatInputModule,
+  MatButtonModule,
   MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
-  MatSliderModule
+  MatSliderModule,
+  MatToolbarModule
 } from "@angular/material";
 
 import { MatCheckboxComponent } from './mat/mat-checkbox/mat-checkbox.component';
 import { MatNameComponent } from './mat/mat-name/mat-name.component';
 import { MatRadioComponent } from './mat/mat-radio/mat-radio.component';
 import { MatSelectComponent } from './mat/mat-select/mat-select.component';
-
-
+import { MatDatePicketComponent } from './mat/date-picket/date-picket.component';
+import 'hammerjs';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,7 +70,9 @@ import { MatSelectComponent } from './mat/mat-select/mat-select.component';
     MatCheckboxComponent,
     MatNameComponent,
     MatRadioComponent,
-    MatSelectComponent
+    MatSelectComponent,
+    MatDatePicketComponent
+    
     
   ],
   imports: [
@@ -78,12 +87,18 @@ import { MatSelectComponent } from './mat/mat-select/mat-select.component';
     MatRadioModule,
     MatSelectModule,
     MatButtonToggleModule,
+    MatButtonModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatProgressSpinnerModule,
     MatSliderModule,
+    MatToolbarModule,
     MatCardModule,
-    AgGridModule.withComponents([MatCheckboxComponent]),
+    MomentModule,
+    AgGridModule.withComponents([MatCheckboxComponent,MatDatePicketComponent]),
     NgbModule.forRoot(),
+    FlexLayoutModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
       { path: 'driver', component: DriverComponent },
