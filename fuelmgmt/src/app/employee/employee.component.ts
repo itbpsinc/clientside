@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FuelmgtService } from './../services/fuelmgt.service';
 import { Employee } from '../model/Employee';
+import {ButtonRendererComponent} from '../renderer/button-renderer';
 
 import { MatCheckboxComponent } from "../mat/mat-checkbox/mat-checkbox.component";
 import { MatDatePicketComponent} from "../mat/date-picket/date-picket.component";
@@ -26,6 +27,7 @@ export class EmployeeComponent implements OnInit {
   private rowHeight;
   private selectRow: {};
   private frameworkComponents = {};
+  private rowDataUpdate;
 
 
 
@@ -131,6 +133,7 @@ export class EmployeeComponent implements OnInit {
         pinned: "left",
         width: 500,
       },
+      /*
       {
         headerName: "Address",
         field: "address1",
@@ -149,6 +152,7 @@ export class EmployeeComponent implements OnInit {
         width: 700,
         resizable: true
       },
+      */
       {
         headerName: "City",
         field: "city",
@@ -167,6 +171,8 @@ export class EmployeeComponent implements OnInit {
         filter: true,
         resizable: true
       },
+      
+      /*
       {
         headerName: "Zipcode",
         field: "zipcode",
@@ -176,6 +182,15 @@ export class EmployeeComponent implements OnInit {
         width: 250,
         resizable: true
       },
+      
+      {
+        headerName: "SSN",
+        field: "ssn",
+        editable: true,
+        sortable: false,
+        width: 200,
+        suppressMenu: true
+      },*/
       {
         headerName: "DOH",
         field: "dateofhire",
@@ -186,14 +201,6 @@ export class EmployeeComponent implements OnInit {
         cellEditorFramework: MatDatePicketComponent,
         valueFormatter: (data) => data.value ? moment(data.value).format('L') : null
 
-      },
-      {
-        headerName: "SSN",
-        field: "ssn",
-        editable: true,
-        sortable: false,
-        width: 200,
-        suppressMenu: true
       },
       {
         headerName: "Active",
@@ -214,16 +221,31 @@ export class EmployeeComponent implements OnInit {
         cellEditorParams: {
           values: ["User", "Admin", "Dispatch", "Accountant", "Office Manager"]
         }
-      }
+      },
+      {
+        headerName: 'Action',
+        cellRenderer: 'buttonRenderer',
+        width: 50,
+        cellRendererParams: {
+          onClick: this.onBtnUpdateClick.bind(this),
+          label: 'Upd'
+        }
+      },
     ];
 
 
     this.components = { numericCellEditor: getNumericCellEditor() };
-    this.frameworkComponents = { checkboxRenderer: MatCheckboxComponent }
+    this.frameworkComponents = { checkboxRenderer: MatCheckboxComponent,
+      buttonRenderer: ButtonRendererComponent }
     this.editType = "fullRow";
     this.rowSelection = "single";
     this.defaultColDef = { resizable: true };
     this.rowHeight = 40;
+
+  }
+
+  onBtnUpdateClick(e) {
+    this.rowDataUpdate  = e.rowData;
 
   }
 

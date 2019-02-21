@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthHttp, AUTH_PROVIDERS, provideAuth, AuthConfig } from 'angular2-jwt/angular2-jwt';
 import { NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule,ReactiveFormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
@@ -21,7 +22,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { AgGridModule } from 'ag-grid-angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FuelmgtService} from './services/fuelmgt.service'
-
+import {ButtonRendererComponent} from './renderer/button-renderer';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor} from './interceptor/httpconfig.interceptor';
 import {ErrorDialogComponent}   from './errordialog/errordialog.component';
@@ -44,7 +45,10 @@ import {
   MatRadioModule,
   MatSelectModule,
   MatSliderModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatMenuModule,  
+  MatDatepicker,   
+  MatOptionModule,  
 } from "@angular/material";
 
 import { MatCheckboxComponent } from './mat/mat-checkbox/mat-checkbox.component';
@@ -54,6 +58,7 @@ import { MatSelectComponent } from './mat/mat-select/mat-select.component';
 import { MatDatePicketComponent } from './mat/date-picket/date-picket.component';
 import 'hammerjs';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,10 +73,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ErrorDialogComponent,
     AngridComponent,
     MatCheckboxComponent,
+    ButtonRendererComponent,
     MatNameComponent,
     MatRadioComponent,
     MatSelectComponent,
-    MatDatePicketComponent
+    MatDatePicketComponent,
+    EmployeeDialogComponent
     
     
   ],
@@ -96,7 +103,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatCardModule,
     MomentModule,
-    AgGridModule.withComponents([MatCheckboxComponent,MatDatePicketComponent]),
+    AgGridModule.withComponents([MatCheckboxComponent,MatDatePicketComponent,ButtonRendererComponent]),
     NgbModule.forRoot(),
     FlexLayoutModule,
     RouterModule.forRoot([
